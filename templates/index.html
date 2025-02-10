@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADAS KPI Recording Tool</title>
+    <link rel="stylesheet" href="../static/css/styles.css">
+</head>
+
+<body>
+    <h1>L2++ Driving Event Recording GUI</h1>
+    <div class="button-groups">
+        <div class="group">
+            <h2>Urban Scenario Group</h2>
+            <button class="action-button" data-text="Button 1">Button 1</button>
+            <button class="action-button" data-text="Button 2">Button 2</button>
+            <button class="action-button" data-text="Button 3">Button 3</button>
+            <button class="action-button" data-text="Button 4">Button 4</button>
+            <button class="action-button" data-text="Button 5">Button 5</button>
+        </div>
+        <div class="group">
+            <h2>Urban Driving Event</h2>
+            <button class="action-button" data-text="Button 6">Button 6</button>
+            <button class="action-button" data-text="Button 7">Button 7</button>
+            <button class="action-button" data-text="Button 8">Button 8</button>
+            <button class="action-button" data-text="Button 9">Button 9</button>
+            <button class="action-button" data-text="Button 10">Button 10</button>
+        </div>
+        <div class="group">
+            <h2>L2++ Criteria Group</h2>
+            <div class="sub-groups">
+                <div class="sub-group">
+                    <h3>safety take over</h3>
+                    <button class="action-button" data-text="Button 11">Button 11</button>
+                    <button class="action-button" data-text="Button 12">Button 12</button>
+                    <button class="action-button" data-text="Button 13">Button 13</button>
+                    <button class="action-button" data-text="Button 14">Button 14</button>
+                    <button class="action-button" data-text="Button 15">Button 15</button>
+                </div>
+                <div class="sub-group">
+                    <h3>NGA Driving Skill</h3>
+                    <button class="action-button" data-text="Button 16">Button 16</button>
+                    <button class="action-button" data-text="Button 17">Button 17</button>
+                    <button class="action-button" data-text="Button 18">Button 18</button>
+                    <button class="action-button" data-text="Button 19">Button 19</button>
+                    <button class="action-button" data-text="Button 20">Button 20</button>
+                </div>
+                <div class="sub-group">
+                    <h3>Law and Intelligence</h3>
+                    <button class="action-button" data-text="Button 21">Button 21</button>
+                    <button class="action-button" data-text="Button 22">Button 22</button>
+                    <button class="action-button" data-text="Button 23">Button 23</button>
+                    <button class="action-button" data-text="Button 24">Button 24</button>
+                    <button class="action-button" data-text="Button 25">Button 25</button>
+                </div>
+            </div>
+        </div>
+        <div id="save-column">
+            <button id="comment-button">Comment</button>
+            <button id="save-button">Save</button>
+            <button id="delete-last-log-button">Delete Last Log</button>
+            <button id="download-button">Download</button>
+        </div>
+    </div>
+    <div id="log"></div>
+    <div class="custom-alert" id="custom-alert"></div>
+    <script>
+        let currentRecords = [];
+        let allSavedRecords = [];
+        const actionButtons = document.querySelectorAll('.action-button');
+        actionButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const timestamp = getChinaTime();
+                const text = this.getAttribute('data-text');
+                const record = { timestamp, text };
+                currentRecords.push(record);
+                updateLog(currentRecords);
+            });
+        });
+
+        const commentButton = document.getElementById('comment-button');
+        commentButton.addEventListener('click', function () {
+            const comment = prompt("Please enter your comment:");
+            if (comment) {
+                const timestamp = getChinaTime();
+                const record = { timestamp, text: comment };
+                currentRecords.push(record);
+                updateLog(currentRecords);
+            }
+        });
+
+        const saveButton = document.getElementById('save-button');
+        saveButton.addEventListener('click', function () {
+            if ("geolocation" in navigator) {
+                navigator.geolocation.getCurrentPosition(
+                    function (position) {
+                        const saveTimestamp = getChinaTime();
+                        const combinedText = currentRecords.map(record => record.text).join(', ');
+                        const latitude = position.coords.latitude;
+                        const longitude = position.coords.longitude;
+                        const finalRecord = {
+                            timestamp: saveTimestamp,
+                            text: combinedText,
+                            latitude,
+                            longitude
+                        };
+                        allSavedRecords.push(finalRecord);
+                        currentRecords = [];
+                        updateLog(allSavedRecords);
+                    },
+                    function (error) {
+                        console.error('获取位置信息失败: ', error.message);
+                        showCustomAlert('获取位置信息失败，请检查设置或重试。', 3000);
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 5000,
+                        maximumAge: 0
+                    }
+                );
+            } else {
+                console.error('您的浏览器不支持地理位置功能。');
+                showCustomAlert('您的浏览器不支持地理位置功能，无法保存坐标。', 3000);
+            }
+        });
+
+        const deleteLastLogButton = document.getElementById('delete-last-log-button');
+        deleteLastLogButton.addEventListener('click', function () {
+            if (allSavedRecords.length > 0) {
+                allSavedRecords.pop();
+                updateLog(allSavedRecords);
+            }
+        });
+
+        const downloadButton = document.getElementById('download-button');
+        downloadButton.addEventListener('click', function () {
+            saveAsCSV(allSavedRecords);
+        });
+
+        function saveAsCSV(records) {
+            let csvContent = "Timestamp,Text,Latitude,Longitude\n";
+            records.forEach(record => {
+                csvContent += `${record.timestamp},${record.text},${record.latitude || ''},${record.longitude || ''}\n`;
+            });
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `records_${getChinaTime()}.csv`;
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+            showCustomAlert('Data downloaded successfully!', 3000);
+        }
+
+        function updateLog(records) {
+            const logDiv = document.getElementById('log');
+            logDiv.innerHTML = '';
+            for (let i = records.length - 1; i >= 0; i--) {
+                const record = records[i];
+                let logText = `Clicked ${record.text} at ${record.timestamp}`;
+                if (record.latitude!== undefined && record.longitude!== undefined) {
+                    logText += ` at Latitude: ${record.latitude}, Longitude: ${record.longitude}`;
+                }
+                logDiv.innerHTML += `<p>${logText}</p>`;
+            }
+        }
+
+        function getChinaTime() {
+            const now = new Date();
+            const timezoneOffsetInMinutes = now.getTimezoneOffset();
+            const timezoneOffsetInMilliseconds = timezoneOffsetInMinutes * 60 * 1000;
+            const chinaTimeInMilliseconds = now.getTime() - timezoneOffsetInMilliseconds;
+            const chinaTime = new Date(chinaTimeInMilliseconds);
+            return chinaTime.toISOString();
+        }
+
+        function showCustomAlert(message, duration) {
+            const customAlert = document.getElementById('custom-alert');
+            customAlert.textContent = message;
+            customAlert.classList.add('show');
+            setTimeout(() => {
+                customAlert.classList.remove('show');
+            }, duration);
+        }
+    </script>
+
+
+</body></html>
