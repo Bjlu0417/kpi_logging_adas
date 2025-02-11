@@ -1,6 +1,9 @@
 from flask import Flask, render_template
-
 app = Flask(__name__)
+
+
+trigger_event = []
+
 
 @app.route('/')
 def get_category():
