@@ -1,39 +1,20 @@
-<!DOCTYPE html>
+{% extends "base.html" %}
 
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ADAS Event Recording Tool</title>
-    <link rel="stylesheet" href="../static/css/styles.css">
-</head>
+{%block title%}DADIAN{%endblock%}
 
-<body class="bg-dark">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container px-5">
-            <a class="navbar-brand" href="#!">Driving Event Recording Tool</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#!">Contact</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#!">Services</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+{% block content %}
     <header class="bg-dark py-5">
         <div class="container px-5">
             <div class="row gx-5 justify-content-center">
                 <div class="col-lg-6">
                     <div class="text-center my-5">
-                        <h1 class="display-5 fw-bolder text-white mb-2 py-5">Start a new driving session or view historys</h1>
+                        <h1 class="display-5 fw-bolder text-white mb-2 py-5">Welcome to the KPI logging tool</h1>
                         <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
-                            <a class="btn btn-primary btn-lg px-4 me-sm-3" href="{{url_for('add_new_session')}}">Start New</a>
-                            <a class="btn btn-outline-light btn-lg px-4" href="#!">View History</a>
+                            <a class="btn btn-primary btn-lg px-4 me-sm-3" href="{{url_for('add_drive')}}">Add a new drive</a>
+                            <a class="btn btn-outline-light btn-lg px-4" href="{{url_for('view_drives')}}">View existing drives</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-</body></html>
+{% endblock %}

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DADIAN-View Drives</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container px-5">
+        <a class="navbar-brand" href="{{url_for('index')}}">DADIAN</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="#!">Contact</a></li>
+                <li class="nav-item"><a class="nav-link" href="#!">Services</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<body class="container mt-4">
+    <h2>Existing Drives</h2>
+    <ul class="list-group">
+        {% for drive in drives %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>ID: {{ drive.id }} - Name: {{ drive.name }} - FINAS ID: {{ drive.finas_id }}</span>
+                <a href="{{ url_for('edit_drive', drive_id=drive.id) }}" class="btn btn-info btn-sm">Edit</a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

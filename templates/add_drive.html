@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{%block title%}Add New Drive{%endblock%}
+
+{%block content%}   
+    <form method="POST">
+        <div class="container">
+            <h2 class="display-6 fw-bolder">Add New Drive</h2>
+            <div class="mb-lg-0">
+                <label for="drver" class="form-label">Driver:</label>
+                <input type="text" name="driver" class="form-control w-25" placeholder="Enter Driver Name (optional)">
+            </div>
+            <div class="mb-3">
+                <label for="name" class="form-label">Drive Name</label>
+                <input type="text" name="name" class="form-control w-25" required placeholder="Enter Drive Name (required)">
+            </div>
+            <div class="mb-3">
+                <label for="finas_id" class="form-label">Finas No</label>
+                <input type="text" name="finas_id" class="form-control w-25" required placeholder="Enter Finas No (required)">
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg px-4 me-sm-3">Create Drive</button>
+        </div>
+    </form>
+{%endblock%}
+</html>
+

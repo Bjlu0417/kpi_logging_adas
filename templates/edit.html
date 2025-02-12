@@ -1,344 +1,61 @@
-<!DOCTYPE html>
-<!-- saved from url=(0030)https://kpilogging.pages.dev/Q -->
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Choose Tag for Generate Event</title>
-    <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
+{% extends "base.html" %}
 
-       .button-groups {
-            display: flex;
-            justify-content: space-between;
-        }
+{%block title%}Edit Drive{%endblock%}
 
-       .group {
-            display: flex;
-            margin: 5px;
-            border: 1px solid #ccc;
-            padding: 10px;
-            flex-direction: column;
-        }
+{%block content%}  
+    <h2>Edit Drive: {{ drive.name }}</h2>
 
-       .group:nth-child(1) {
-            background-color: #8bc7e3;
-            align-items: center;
-        }
-
-       .group:nth-child(2) {
-            background-color: #fff6cc;
-            align-items: center;
-        }
-
-       .group:nth-child(3) {
-            background-color: #ebc4c4;
-        }
-
-        .group:nth-child(4) {
-            background-color: #c4c5eb;
-        }
-
-       .group:nth-child(3) h2 {
-            text-align: center;
-        }
-
-        .group:nth-child(4) h2 {
-            text-align: center;
-        }
-
-       .group:nth-child(3) .sub-groups {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-around;
-        }
-
-       .group:nth-child(3) .sub-group {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-       .action-button {
-            height: 30px;
-            margin-bottom: 15px;
-            width: auto;
-            min-width: 100%;
-            box-sizing: border-box;
-        }
-        .action-button.highlight{
-            background-color: #007bff;
-            color: white;
-            border-color: #007bff;
-        }
-
-        #action-group {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        #save-button, 
-        #trigger-button,
-        #download-button {
-            font-size: 24px;
-            padding: 20px;
-            height: 100%;
-            width: auto;
-        }
-        
-        #comment-area{
-            display: flex;
-            width: 100%;
-            margin: 15px;
-        }
-
-        #voice-button{
-            width: 200px;
-            flex-shrink: 0;
-        }
-
-        #comment-input{
-            padding: 15px;
-            flex-grow: 1;
-        }
-
-        #comment-button,
-        #voice-button{
-            font-size: 18px;
-            padding: 15px;
-            margin-bottom: 0px;
-        }
-
-        #log {
-            margin-top: 20px;
-            border-top: 1px solid #ccc;
-            padding-top: 20px;
-        }
-
-       .custom-alert {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #4CAF50;
-            color: white;
-            padding: 15px;
-            border-radius: 5px;
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-            z-index: 1000;
-        }
-
-       .custom-alert.show {
-            opacity: 1;
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-       .group h2 {
-            font-size: 18px;
-        }
-
-       .group:nth-child(3) .sub-group h3 {
-            font-size: 16px;
-        }
-    </style>
-</head>
-
-<body>
-    <h1>Chosse Tags for New Event</h1>
-
-        <div class="group">
-            <h2>TSA/ ETSA</h2>
-            <button class="action-button" data-text="FN Ramp Speedlimit">FN Ramp Speedlimit</button>
-            <button class="action-button" data-text="FN Highway Speedlimit">FN Highway Speedlimit</button>
-            <button class="action-button" data-text="Wrong SL at Gantry">Wrong SL at Gantry</button>
-            <button class="action-button" data-text="TSA Dummy 1">TSA Dummy 1</button>
-            <button class="action-button" data-text="TSA Dummy 2">TSA Dummy 2</button>
+    <!-- Edit Drive Info -->
+    <form method="POST">
+        <div class="mb-3">
+            <label for="name" class="form-label">Drive Name</label>
+            <input type="text" name="name" value="{{ drive.name }}" class="form-control" required>
         </div>
-
-        <div class="group">
-            <h2>L2 Driving</h2>
-            <div class="sub-groups">
-                <div class="sub-group">
-                    <h3>ACC</h3>
-                    <button class="action-button" data-text="ACC Dummy 1">ACC Dummy 1</button>
-                    <button class="action-button" data-text="ACC Dummy 2">ACC Dummy 2</button>
-                    <button class="action-button" data-text="ACC Dummy 3">ACC Dummy 3</button>
-                    <button class="action-button" data-text="ACC Dummy 4">ACC Dummy 4</button>
-                    <button class="action-button" data-text="ACC Dummy 5">ACC Dummy 5</button>
-                </div>
-                <div class="sub-group">
-                    <h3>ALSA</h3>
-                    <button class="action-button" data-text="ALSA Dummy 1">ALSA Dummy 1</button>
-                    <button class="action-button" data-text="ALSA Dummy 2">ALSA Dummy 2</button>
-                    <button class="action-button" data-text="ALSA Dummy 3">ALSA Dummy 3</button>
-                    <button class="action-button" data-text="ALSA Dummy 4">ALSA Dummy 4</button>
-                    <button class="action-button" data-text="ALSA Dummy 5">ALSA Dummy 5</button>
-                </div>
-                <div class="sub-group">
-                    <h3>ALCA</h3>
-                    <button class="action-button" data-text="ALCA Dummy 1">ALSA Dummy 1</button>
-                    <button class="action-button" data-text="ALCA Dummy 2">ALSA Dummy 2</button>
-                    <button class="action-button" data-text="ALCA Dummy 3">ALSA Dummy 3</button>
-                    <button class="action-button" data-text="ALCA Dummy 4">ALSA Dummy 4</button>
-                    <button class="action-button" data-text="ALCA Dummy 5">ALSA Dummy 5</button>
-                </div>
-            </div>
-
-        </div> 
-                
-        <div class="group">
-            <h2>L2+ Driving</h2>
-            <button class="action-button" data-text="L2+ Dummy 1">L2+ Dummy 1</button>
-            <button class="action-button" data-text="L2+ Dummy 2">L2+ Dummy 2</button>
-            <button class="action-button" data-text="L2+ Dummy 3">L2+ Dummy 3</button>
-            <button class="action-button" data-text="L2+ Dummy 4">L2+ Dummy 4</button>
-            <button class="action-button" data-text="L2+ Dummy 5">L2+ Dummy 5</button>
+        <div class="mb-3">
+            <label for="finas_id" class="form-label">FINAS ID</label>
+            <input type="text" name="finas_id" value="{{ drive.finas_id }}" class="form-control">
         </div>
+        <button type="submit" class="btn btn-primary">Update Drive</button>
+    </form>
 
-        <div id="comment-area">
-            <button id="voice-button">Press and hold to speak</button>
-            <input id="comment-input" type = "text" placeholder="Type additional comment here">
-        
-        </div>
-        
-        <div id="action-group">
-            <button id="trigger-button">Trigger Event</button>
-            <button id="save-button">Save</button>
-            <button id="download-button">Download</button>
-        </div>
+    <hr>
 
-    <div id="log"></div>
-    <div class="custom-alert" id="custom-alert"></div>
-    <script>
-        let currentRecords = [];
-        let allSavedRecords = [];
-        const actionButtons = document.querySelectorAll('.action-button');
+    <!-- Add Event -->
+    <h4>Add New Event</h4>
+    <form method="POST">
+        <textarea name="comment" placeholder="Event Comment" class="form-control mb-2" required></textarea>
 
-        actionButtons.forEach(button => {
-            button.addEventListener('click', () => {
-            button.classList.toggle('highlight');
-            });
-        });   
+        <label>Tags:</label><br>
+        <input type="checkbox" name="tags" value="Urgent"> Urgent
+        <input type="checkbox" name="tags" value="Review"> Review
+        <input type="checkbox" name="tags" value="Optional"> Optional
 
+        <button type="submit" class="btn btn-success mt-2">Add Event</button>
+    </form>
 
-        const commentButton = document.getElementById('comment-button');
-        commentButton.addEventListener('click', function () {
-            const comment = prompt("Please enter your comment:");
-            if (comment) {
-                const timestamp = getChinaTime();
-                const record = { timestamp, text: comment };
-                currentRecords.push(record);
-                updateLog(currentRecords);
-            }
-        });
+    <hr>
 
-        const saveButton = document.getElementById('save-button');
-        saveButton.addEventListener('click', function () {
-            if ("geolocation" in navigator) {
-                navigator.geolocation.getCurrentPosition(
-                    function (position) {
-                        const saveTimestamp = getChinaTime();
-                        const combinedText = currentRecords.map(record => record.text).join(', ');
-                        const latitude = position.coords.latitude;
-                        const longitude = position.coords.longitude;
-                        const finalRecord = {
-                            timestamp: saveTimestamp,
-                            text: combinedText,
-                            latitude,
-                            longitude
-                        };
-                        allSavedRecords.push(finalRecord);
-                        currentRecords = [];
-                        updateLog(allSavedRecords);
-                    },
-                    function (error) {
-                        console.error('获取位置信息失败: ', error.message);
-                        showCustomAlert('获取位置信息失败，请检查设置或重试。', 3000);
-                    },
-                    {
-                        enableHighAccuracy: true,
-                        timeout: 5000,
-                        maximumAge: 0
-                    }
-                );
-            } else {
-                console.error('您的浏览器不支持地理位置功能。');
-                showCustomAlert('您的浏览器不支持地理位置功能，无法保存坐标。', 3000);
-            }
-        });
+    <!-- Existing Events -->
+    <h4>Events</h4>
+    <ul class="list-group">
+        {% for event in drive.events %}
+            <li class="list-group-item">
+                <strong>Time:</strong> {{ event.time }}<br>
+                <strong>Tags:</strong> 
+                {% for tag in event.tags %}
+                    <span class="badge bg-info">{{ tag.name }}</span>
+                {% endfor %}<br>
+                <strong>Comment:</strong> {{ event.comment }}<br>
 
-        const deleteLastLogButton = document.getElementById('delete-last-log-button');
-        deleteLastLogButton.addEventListener('click', function () {
-            if (allSavedRecords.length > 0) {
-                allSavedRecords.pop();
-                updateLog(allSavedRecords);
-            }
-        });
+                <!-- Edit Event Button -->
+                <a href="{{ url_for('edit_event', event_id=event.id) }}" class="btn btn-warning btn-sm mt-2">Edit</a>
 
-        const downloadButton = document.getElementById('download-button');
-        downloadButton.addEventListener('click', function () {
-            saveAsCSV(allSavedRecords);
-        });
-
-        function saveAsCSV(records) {
-            let csvContent = "Timestamp,Text,Latitude,Longitude\n";
-            records.forEach(record => {
-                csvContent += `${record.timestamp},${record.text},${record.latitude || ''},${record.longitude || ''}\n`;
-            });
-            const blob = new Blob([csvContent], { type: 'text/csv' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `records_${getChinaTime()}.csv`;
-            a.style.display = 'none';
-            document.body.appendChild(a);
-            a.click();
-            URL.revokeObjectURL(url);
-            document.body.removeChild(a);
-            showCustomAlert('Data downloaded successfully!', 3000);
-        }
-
-        function updateLog(records) {
-            const logDiv = document.getElementById('log');
-            logDiv.innerHTML = '';
-            for (let i = records.length - 1; i >= 0; i--) {
-                const record = records[i];
-                let logText = `Clicked ${record.text} at ${record.timestamp}`;
-                if (record.latitude!== undefined && record.longitude!== undefined) {
-                    logText += ` at Latitude: ${record.latitude}, Longitude: ${record.longitude}`;
-                }
-                logDiv.innerHTML += `<p>${logText}</p>`;
-            }
-        }
-
-        function getChinaTime() {
-            const now = new Date();
-            const timezoneOffsetInMinutes = now.getTimezoneOffset();
-            const timezoneOffsetInMilliseconds = timezoneOffsetInMinutes * 60 * 1000;
-            const chinaTimeInMilliseconds = now.getTime() - timezoneOffsetInMilliseconds;
-            const chinaTime = new Date(chinaTimeInMilliseconds);
-            return chinaTime.toISOString();
-        }
-
-        function showCustomAlert(message, duration) {
-            const customAlert = document.getElementById('custom-alert');
-            customAlert.textContent = message;
-            customAlert.classList.add('show');
-            setTimeout(() => {
-                customAlert.classList.remove('show');
-            }, duration);
-        }
-    </script>
-
-
-</body></html>
+                <!-- Delete Event Button -->
+                <form method="POST" action="{{ url_for('delete_event', event_id=event.id) }}" style="display:inline;">
+                    <button type="submit" class="btn btn-danger btn-sm mt-2">Delete</button>
+                </form>
+            </li>
+        {% endfor %}
+    {%endblock%}
+</body>
+</html>
